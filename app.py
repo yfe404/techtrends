@@ -22,6 +22,17 @@ def get_post(post_id):
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 
+
+# Increment counter of DB access by one
+def increment_db_access_count():
+    connection = sqlite3.connect('database.db')
+
+    cur = connection.cursor()
+
+    cur.execute("UPDATE metrics SET counter = counter + 1 WHERE id like 'access'")
+    connection.commit()
+    connection.close()
+
 # Define the main route of the web application 
 @app.route('/')
 def index():
@@ -29,6 +40,28 @@ def index():
     posts = connection.execute('SELECT * FROM posts').fetchall()
     connection.close()
     return render_template('index.html', posts=posts)
+
+
+@app.route('/metrics')
+def metrics():
+
+    connection = get_db_connection()
+    posts = connection.execute('SELECT * FROM posts').fetchall()
+    count_access = connection.execute('SELECT counter FROM metrics WHERE id = "access"').fetchone()['counter']
+
+    payload = {
+        "db_connection_count": count_access,
+        "post_count": len(posts)
+    }
+    
+    response = app.response_class(
+            response=json.dumps(payload),
+            status=200,
+            mimetype='application/json'
+    )
+    
+    return response
+
 
 
 # Define healthcheck route of the web application 
@@ -40,9 +73,7 @@ def healthz():
         mimetype='application/json'
     )
 
-    app.logger.info('Status request successfull')
     return response
-
 
 
 # Define how each individual article is rendered 
@@ -51,9 +82,10 @@ def healthz():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
-      return render_template('404.html'), 404
+        return render_template('404.html'), 404
     else:
-      return render_template('post.html', post=post)
+        increment_db_access_count()
+        return render_template('post.html', post=post)
 
 # Define the About Us page
 @app.route('/about')
@@ -75,7 +107,7 @@ def create():
                          (title, content))
             connection.commit()
             connection.close()
-
+            increment_db_access_count()
             return redirect(url_for('index'))
 
     return render_template('create.html')

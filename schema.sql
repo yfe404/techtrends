@@ -6,3 +6,9 @@ CREATE TABLE posts (
     title TEXT NOT NULL,
     content TEXT NOT NULL
 );
+
+
+CREATE TABLE metrics (
+    id text PRIMARY KEY,
+    counter INTEGER DEFAULT 0
+);

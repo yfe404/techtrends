@@ -8,6 +8,8 @@ with open('schema.sql') as f:
 
 cur = connection.cursor()
 
+cur.execute("INSERT INTO metrics (id) VALUES (?)", ("access",))
+
 cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",
             ('2020 CNCF Annual Report', 'The Cloud Native Computing Foundation (CNCF) annual report for 2020 is now available. The report highlights the growth of the community, events, projects, and more, over the past year.')
             )
