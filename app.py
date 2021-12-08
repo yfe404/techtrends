@@ -3,6 +3,8 @@ import sqlite3
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
 
+import logging
+
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
 def get_db_connection():
@@ -82,14 +84,17 @@ def healthz():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
+        app.logger.info(f'Non-existing article is accessed!')
         return render_template('404.html'), 404
     else:
+        app.logger.info(f'Article {post["title"]} retrieved!')
         increment_db_access_count()
         return render_template('post.html', post=post)
 
 # Define the About Us page
 @app.route('/about')
 def about():
+    app.logger.info(f'About Us page is accessed.')
     return render_template('about.html')
 
 # Define the post creation functionality 
@@ -108,6 +113,7 @@ def create():
             connection.commit()
             connection.close()
             increment_db_access_count()
+            app.logger.info(f'Article {title} has been created!')
             return redirect(url_for('index'))
 
     return render_template('create.html')
