@@ -84,17 +84,17 @@ def healthz():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
-        app.logger.info(f'Non-existing article is accessed!')
+        app.logger.info('Non-existing article is accessed!')
         return render_template('404.html'), 404
     else:
-        app.logger.info(f'Article {post["title"]} retrieved!')
+        app.logger.info('Article {} retrieved!'.format(post["title"]))
         increment_db_access_count()
         return render_template('post.html', post=post)
 
 # Define the About Us page
 @app.route('/about')
 def about():
-    app.logger.info(f'About Us page is accessed.')
+    app.logger.info('About Us page is accessed.')
     return render_template('about.html')
 
 # Define the post creation functionality 
@@ -113,7 +113,7 @@ def create():
             connection.commit()
             connection.close()
             increment_db_access_count()
-            app.logger.info(f'Article {title} has been created!')
+            app.logger.info('Article has been created!'.format({title}))
             return redirect(url_for('index'))
 
     return render_template('create.html')
