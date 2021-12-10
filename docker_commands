@@ -1,0 +1,46 @@
+## Docker commands used to build the application 
+docker build -t techtrends .   
+
+## Docker commands used to run the application
+docker run -d -p 7111:3111 --name techtrends techtrends
+
+## Docker commands used to get the application logs
+docker logs techtrends
+
+## Logs from the container running the TechTrends application
+
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:3111/ (Press CTRL+C to quit)
+172.17.0.1 - - [10/Dec/2021 20:00:37] "GET / HTTP/1.1" 200 -
+[2021-12-10 20:00:38,120] INFO in app: Article 2020 CNCF Annual Report retrieved!
+172.17.0.1 - - [10/Dec/2021 20:00:38] "GET /1 HTTP/1.1" 200 -
+[2021-12-10 20:00:40,647] INFO in app: Article KubeCon + CloudNativeCon 2021 retrieved!
+172.17.0.1 - - [10/Dec/2021 20:00:40] "GET /2 HTTP/1.1" 200 -
+[2021-12-10 20:02:56,569] INFO in app: About Us page is accessed.
+172.17.0.1 - - [10/Dec/2021 20:02:56] "GET /about HTTP/1.1" 200 -
+172.17.0.1 - - [10/Dec/2021 20:02:58] "GET / HTTP/1.1" 200 -
+172.17.0.1 - - [10/Dec/2021 20:03:00] "GET /create HTTP/1.1" 200 -
+[2021-12-10 20:03:11,082] INFO in app: Article has been created!
+172.17.0.1 - - [10/Dec/2021 20:03:11] "POST /create HTTP/1.1" 302 -
+172.17.0.1 - - [10/Dec/2021 20:03:11] "GET / HTTP/1.1" 200 -
+[2021-12-10 20:03:15,634] INFO in app: Article This is my post Title retrieved!
+172.17.0.1 - - [10/Dec/2021 20:03:15] "GET /7 HTTP/1.1" 200 -
+172.17.0.1 - - [10/Dec/2021 20:03:20] "GET / HTTP/1.1" 200 -
+172.17.0.1 - - [10/Dec/2021 20:03:28] "GET /metrics HTTP/1.1" 200 -
+172.17.0.1 - - [10/Dec/2021 20:03:36] "GET /healthz HTTP/1.1" 200 -
+[2021-12-10 20:03:41,812] INFO in app: Article CNCF Cloud Native Interactive Landscape retrieved!
+172.17.0.1 - - [10/Dec/2021 20:03:41] "GET /4 HTTP/1.1" 200 -
+172.17.0.1 - - [10/Dec/2021 20:03:43] "GET / HTTP/1.1" 200 -
+
+
+
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on http://0.0.0.0:3111/ (Press CTRL+C to quit)
