@@ -1,0 +1,36 @@
+# Default values for techtrends.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace:
+  name: sandbox
+
+service:
+  port: 4111
+  targetPort: 3111
+  type: ClusterIP
+  protocol: TCP
+
+image:
+  repository: techtrends
+  tag: latest
+  pullPolicy: IfNotPresent
+  
+
+replicaCount: 1
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 64Mi
+  limits:
+    cpu: 500m
+    memory: 128Mi
+
+containerPort: 3111
+
+livenessProbe:
+  path: /healthz
+
+readinessProbe:
+  path: /healthz
