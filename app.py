@@ -1,3 +1,4 @@
+import sys
 from os.path import exists
 import sqlite3
 
@@ -5,6 +6,12 @@ from flask import Flask, jsonify, json, render_template, request, url_for, redir
 from werkzeug.exceptions import abort
 
 import logging
+
+# set logger to handle STDOUT and STDERR 
+stdout_handler = logging.StreamHandler(sys.stdout) # stdout handler 
+stderr_handler = logging.StreamHandler(sys.stderr) # stderr handler 
+handlers = [stderr_handler, stdout_handler]
+
 
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
@@ -98,7 +105,7 @@ def healthz():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
-        app.logger.info('Non-existing article is accessed!')
+        app.logger.error('Non-existing article is accessed!')
         return render_template('404.html'), 404
     else:
         app.logger.info('Article {} retrieved!'.format(post["title"]))
@@ -134,6 +141,11 @@ def create():
 
 # start the application on port 3111
 if __name__ == "__main__":
+   for handler in handlers:
+      handler.setFormatter(logging.Formatter(
+          '[%(asctime)s] %(levelname)s in %(module)s: %(message)s'
+      ))
+      app.logger.addHandler(handler)
+
    app.logger.setLevel(logging.DEBUG)
    app.run(host='0.0.0.0', port='3111')
-   
