@@ -18,7 +18,7 @@ spec:
       containers:
       - name: techtrends
         image: yfe404/{{ .Values.image.repository }}:{{ .Values.image.tag }}
-        pullPolicy: {{ .Values.image.pullPolicy }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         livenessProbe:
           httpGet:
             path: {{ .Values.livenessProbe.path }}
