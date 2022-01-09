@@ -1,3 +1,4 @@
+from os.path import exists
 import sqlite3
 
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
@@ -69,12 +70,25 @@ def metrics():
 # Define healthcheck route of the web application 
 @app.route('/healthz')
 def healthz():
-    response = app.response_class(
-        response=json.dumps({"result":"OK - healthy"}),
-        status=200,
-        mimetype='application/json'
-    )
 
+    file_exists = exists("./database.db")
+
+    if file_exists:
+        response = app.response_class(
+            response=json.dumps({"result":"OK - healthy"}),
+            status=200,
+            mimetype='application/json'
+        )
+
+
+    else:
+        response = app.response_class(
+            response=json.dumps({"result":"Error - unhealthy"}),
+            status=500,
+            mimetype='application/json'
+        )
+
+        
     return response
 
 
